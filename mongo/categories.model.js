@@ -3,4 +3,5 @@ module.exports = mongoose.model('Categories', new mongoose.Schema({
     order: { type: Number },
     name: { type: String, default: "" },
     expanded: { type: Boolean, default: false },
+    content: { type: String, default: "" },
 }, { timestamps: true }));
