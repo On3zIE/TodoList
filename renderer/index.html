@@ -9,16 +9,15 @@
     <script src="./index.js" type="text/javascript"></script>
   </head>
   <body>
-    <img class = "bg-image" src="bg.jpg">
-    <div class = "top-left" id="textBox">
+    <div id="side-bar">
       <h1>Todo-List</h1>
       <h1>Calendar</h1>
-      <div id="categoryDisplay">
-
+    </div>
+    <div id="main-container">
+      <div id="create-category">
+        <input type="text" id="categoryName"/>
+        <button onclick="addNewCat()">create category</button>
       </div>
-      <button onclick="displayCategories()">SHOW CATEGORIES</button>
-      <input type="text" id="categoryName"/>
-      <button onclick="addNewCat()">CREATE CATEGORY</button>
     </div>
   </body>
 </html>
