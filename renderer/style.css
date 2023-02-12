@@ -77,7 +77,24 @@ p, h1, h2, h3, h4, h5, h6 {
   align-items: flex-start;
 }
 
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.normal{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
 .category {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
   border:50px;
   background-image: url("jerma.png");
   height: 100%;
@@ -90,5 +107,5 @@ p, h1, h2, h3, h4, h5, h6 {
   padding: 25px;
   margin-bottom: 25px;
   width: 100%;
-  display:table;
+  /*display:table;*/
 }

@@ -41,6 +41,8 @@ const displayCategories = async () => {
         .then(categories => {
             categories.forEach(category => {
                 var div = document.createElement("div");
+                var buttons = document.createElement("div");
+                var normal = document.createElement("div");
                 var span = document.createElement("h3");
                 var arrowDiv = document.createElement("div");
                 var delDiv = document.createElement("div");
@@ -51,13 +53,17 @@ const displayCategories = async () => {
                 var downbuttonText = document.createTextNode("-2");
                 var delButtonText = document.createTextNode("delete");
                 var text = document.createTextNode(category.name);
-                // var content = document.createElement("p");
-                // div.appendChild(content);
+                var content = document.createTextNode(category.content);
+                var textArea = document.createElement("textArea");
+                textArea.classList.add("textArea");
+                normal.classList.add("normal");
+                buttons.classList.add("buttons");
+                textArea.appendChild(content);
                 div.id = "category-" + category.order;
                 div.classList.add("category");
-                div.appendChild(span);
-                div.appendChild(arrowDiv);
-                div.appendChild(delDiv);
+                normal.appendChild(span);
+                buttons.appendChild(arrowDiv);
+                buttons.appendChild(delDiv);
                 arrowDiv.appendChild(upButton);
                 arrowDiv.appendChild(downButton);
                 arrowDiv.classList.add("arrow-div");
@@ -67,14 +73,26 @@ const displayCategories = async () => {
                 downButton.appendChild(downbuttonText);
                 delButton.appendChild(delButtonText);
                 span.appendChild(text);
+                div.appendChild(normal);
+                div.appendChild(buttons);
                 categoryContainer.appendChild(div);
+                normal.appendChild(textArea);
                 upButton.onclick = () => changeOrderUp(category.order);
                 downButton.onclick = () => changeOrderDown(category.order);
                 delButton.onclick = () => deleteCat(category.order);
+                textArea.addEventListener("input", event => updateContent(event.target.value, category.order));
             })
         })
     
 }
+
+const updateContent = async (text, order) => {
+    const editingCat = await Categories.findOne({order: order});
+    editingCat.content = text;
+    editingCat.save();
+}
+
+
 
 const changeOrderUp = async order => {
     if(order == 0) return;
