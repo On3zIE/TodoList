@@ -1,13 +1,16 @@
 const { BrowserWindow } = require("electron");
 
 let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 
 const forwardMonth = () => {
     currentMonth++;
+    currentYear = new Date(2023, currentMonth + 1, 0).getFullYear();
     displayDates();
 }
 const backwardMonth = () => {
     currentMonth--;
+    currentYear = new Date(2023, currentMonth + 1, 0).getFullYear();
     displayDates();
 }
 
@@ -18,33 +21,26 @@ const getDaysArr = () => {
     var daysInMonth = new Date(dateNow.getFullYear(), currentMonth + 1, 0).getDate();
     var daysInPreviousMonth = new Date(dateNow.getFullYear(), currentMonth, 0).getDate();
 
-    var extraStartDays = 7 - firstDay - 1;
     var extraEndDays = 7 - lastDay - 1;
 
     var days = [];
 
-    //console.log(daysInPreviousMonth);
-
-    for (let i = daysInPreviousMonth - extraStartDays + 1; i < daysInPreviousMonth + 1; i++) {
+    for (let i = daysInPreviousMonth - firstDay + 1; i < daysInPreviousMonth + 1; i++) {
         const daysObj = { i: i, class: "outOfMonth" };
-        console.log(daysObj);
         days.push(daysObj);
     }
 
     for (let i = 0; i < daysInMonth; i++) {
         const daysObj = { i: i + 1, class: "daysStyle" };
-        console.log(daysObj);
         days.push(daysObj);
     }
 
     for (let i = 0; i < extraEndDays; i++) {
         const daysObj = { i: i + 1, class: "outOfMonth" };
-        console.log(daysObj);
         days.push(daysObj);
     }
     if (days.length == 35) for (let i = 2; i < 9; i++) {
         const daysObj = { i: i, class: "outOfMonth" };
-        console.log(daysObj);
         days.push(daysObj);
     }
 
@@ -53,7 +49,8 @@ const getDaysArr = () => {
 
 const displayDates = () => {
     var monthName = new Date(2000, currentMonth + 1, 0).toLocaleString('default', { month: 'long' });
-    document.getElementById("monthName").innerHTML = monthName;
+    document.getElementById("dateName").innerHTML = monthName + ', ';
+    document.getElementById("dateName").innerHTML += currentYear;
 
     var days = getDaysArr();
     var categoryContainer = document.getElementById("main-Container");
