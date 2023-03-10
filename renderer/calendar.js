@@ -1,45 +1,66 @@
 const { BrowserWindow } = require("electron");
 
-var dateNow = new Date();
-var firstDay = new Date(dateNow.getFullYear(), dateNow.getMonth(), 1).getDay();
-var lastDay = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0).getDay();
-var daysInMonth = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0).getDate();
-var daysInPreviousMonth = new Date(dateNow.getFullYear(), dateNow.getMonth(), 0).getDate();
+let currentMonth = new Date().getMonth();
 
-var extraStartDays = 7 - firstDay - 1;
-var extraEndDays = 7 - lastDay - 1;
-
-var days = [];
-
-//console.log(daysInPreviousMonth);
-
-for(let i = daysInPreviousMonth - extraStartDays + 1; i < daysInPreviousMonth + 1; i++) {
-    const daysObj = {i: i, class: "outOfMonth"};
-    console.log(daysObj);
-    days.push(daysObj);
+const forwardMonth = () => {
+    currentMonth++;
+    displayDates();
+}
+const backwardMonth = () => {
+    currentMonth--;
+    displayDates();
 }
 
-for(let i = 0; i < daysInMonth; i++) {
-    const daysObj = {i: i + 1, class: "daysStyle"};
-    console.log(daysObj);
-    days.push(daysObj);
+const getDaysArr = () => {
+    var dateNow = new Date();
+    var firstDay = new Date(dateNow.getFullYear(), currentMonth, 1).getDay();
+    var lastDay = new Date(dateNow.getFullYear(), currentMonth + 1, 0).getDay();
+    var daysInMonth = new Date(dateNow.getFullYear(), currentMonth + 1, 0).getDate();
+    var daysInPreviousMonth = new Date(dateNow.getFullYear(), currentMonth, 0).getDate();
+
+    var extraStartDays = 7 - firstDay - 1;
+    var extraEndDays = 7 - lastDay - 1;
+
+    var days = [];
+
+    //console.log(daysInPreviousMonth);
+
+    for (let i = daysInPreviousMonth - extraStartDays + 1; i < daysInPreviousMonth + 1; i++) {
+        const daysObj = { i: i, class: "outOfMonth" };
+        console.log(daysObj);
+        days.push(daysObj);
+    }
+
+    for (let i = 0; i < daysInMonth; i++) {
+        const daysObj = { i: i + 1, class: "daysStyle" };
+        console.log(daysObj);
+        days.push(daysObj);
+    }
+
+    for (let i = 0; i < extraEndDays; i++) {
+        const daysObj = { i: i + 1, class: "outOfMonth" };
+        console.log(daysObj);
+        days.push(daysObj);
+    }
+    if (days.length == 35) for (let i = 2; i < 9; i++) {
+        const daysObj = { i: i, class: "outOfMonth" };
+        console.log(daysObj);
+        days.push(daysObj);
+    }
+
+    return days;
 }
 
-for(let i = 0; i < extraEndDays; i++) {
-    const daysObj = {i: i + 1, class: "outOfMonth"};
-    console.log(daysObj);
-    days.push(daysObj);
-}
-if (days.length == 35) for (let i = 2; i < 9; i++) {
-    const daysObj = {i: i, class: "outOfMonth"};
-    console.log(daysObj);
-    days.push(daysObj);
-}
+const displayDates = () => {
+    var monthName = new Date(2000, currentMonth + 1, 0).toLocaleString('default', { month: 'long' });
+    document.getElementById("monthName").innerHTML = monthName;
 
-console.log(days);
-
-const displayDates = days => {
+    var days = getDaysArr();
     var categoryContainer = document.getElementById("main-Container");
+    const calendarBoxes = document.getElementsByClassName("calendarEntries");
+    while (calendarBoxes.length > 0) {
+        calendarBoxes[0].parentNode.removeChild(calendarBoxes[0]);
+    }
     var dateRows = document.createElement("div");
     var row1 = document.createElement("div");
     var row2 = document.createElement("div");
@@ -95,5 +116,5 @@ const displayDates = days => {
     
 }
 
-window.onload = () => displayDates(days);
+window.onload = () => displayDates();
 
