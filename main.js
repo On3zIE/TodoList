@@ -10,7 +10,7 @@ const createWindow = () => {
     }
   })
 
-  win.loadFile('./renderer/index.html')
+  win.loadFile('./renderer/calendar.html')
 }
 
 app.whenReady().then(() => {
