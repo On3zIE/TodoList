@@ -1,5 +1,5 @@
 require('../mongo/mongoose.config');
-const CalendarEntries = require('../mongo/calendar-entries.model');
+
 const Categories = require('../mongo/categories.model');
 
 
@@ -22,8 +22,6 @@ const getNewCatOrder = async () => {
             } else {
                 newCatOrder = categories[0].order + 1;
             }
-            
-            console.log(categories);
         });
     return newCatOrder;
 }
