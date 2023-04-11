@@ -21,8 +21,8 @@ const backwardMonth = () => {
 
 const findCalendarProperties = async () => {
     let conciseCalEntries = {};
-    let STUPID = await calendarEntries.find({});
-    STUPID.forEach(ce => {
+    let calEntries = await calendarEntries.find({});
+    calEntries.forEach(ce => {
         conciseCalEntries[ce.date] = ce.content;
     })
     console.log(conciseCalEntries);
@@ -93,21 +93,23 @@ const displayDates = async () => {
     var row6 = document.createElement("div");
     dateRows.classList.add("calendarEntries");
     dateRows.id = "dateRows";
-    console.log(days);
+    console.log(days[6].content);
     for (let i = 0; i < days.length; i++) {
         var boxText = document.createTextNode(days[i].i);
         var dateBox = document.createElement("div");
         var textArea = document.createElement("textarea");
         var content = document.createTextNode(days[i].content);
-        console.log(content);
-        if(days[i].content == undefined) content = document.createTextNode("");
+        if(days[i].content == undefined) {
+            content = document.createTextNode("");
+            isReal = false;
+        }
         textArea.classList.add("textArea");
         textArea.appendChild(content);
         dateBox.appendChild(boxText);
         dateBox.appendChild(textArea);
         dateBox.classList.add("dateBox"); 
         dateBox.classList.add(days[i].class);
-        
+        textArea.addEventListener("input", event => editEntry(event.target.value, days[i].date, isReal, realDay));
         
         switch(Math.floor(i / 7) + 1) {
             case 1:
@@ -143,6 +145,24 @@ const displayDates = async () => {
     row1.classList.add("row1");
     categoryContainer.appendChild(dateRows);
     
+}
+
+const editEntry = async (text, date, isReal) => {
+    const editingEntry = await calendarEntries.findOne({date: date});
+    if(editingEntry == null) {
+        editNewEntry(text, date);
+        return;
+    }
+    editingEntry.content = text;
+    editingEntry.save();
+}
+
+const editNewEntry = async (text, date) => {
+    calendarEntries.create({date: date, content: "" })
+        .then(entry => {
+            entry.content = text;
+            entry.save();
+        });
 }
 
 window.onload = () => displayDates();
